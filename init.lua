@@ -9,6 +9,9 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
   vim.cmd [[packadd packer.nvim]]
 end
 
+require('config.options')
+require('config.keymap')
+
 require('packer').startup(function(use)
   -- Package manager
   use 'wbthomason/packer.nvim'
@@ -66,12 +69,10 @@ require('packer').startup(function(use)
   })
 
   use {'akinsho/bufferline.nvim', tag = "v3.*", requires = 'nvim-tree/nvim-web-devicons'}
-
-  -- Git related plugins
+  use 'jvgrootveld/telescope-zoxide'
   use 'tpope/vim-fugitive'
   use 'tpope/vim-rhubarb'
   use 'lewis6991/gitsigns.nvim'
-
   use 'sbdchd/neoformat'
   use 'jiangmiao/auto-pairs'
   use 'junegunn/vim-peekaboo'
@@ -80,7 +81,6 @@ require('packer').startup(function(use)
   use 'lukas-reineke/indent-blankline.nvim' -- Add indentation guides even on blank lines
   use 'numToStr/Comment.nvim' -- "gc" to comment visual regions/lines
   use 'tpope/vim-sleuth' -- Detect tabstop and shiftwidth automatically
-
   use 'junegunn/fzf'
 
   -- Fuzzy Finder (files, lsp, etc)
@@ -100,48 +100,7 @@ require('packer').startup(function(use)
   end
 end)
 
-require'nvim-web-devicons'.setup {
- -- your personnal icons can go here (to override)
- -- you can specify color or cterm_color instead of specifying both of them
- -- DevIcon will be appended to `name`
- override = {
-  zsh = {
-    icon = "Hack Nerd Font",
-    color = "#428850",
-    cterm_color = "65",
-    name = "Zsh"
-  }
- };
- -- globally enable different highlight colors per icon (default to true)
- -- if set to false all icons will have the default icon's color
- color_icons = true;
- -- globally enable default icons (default to false)
- -- will get overriden by `get_icons` option
- default = true;
- -- globally enable "strict" selection of icons - icon will be looked up in
- -- different tables, first by filename, and if not found by extension; this
- -- prevents cases when file doesn't have any extension but still gets some icon
- -- because its name happened to match some extension (default to false)
- strict = true;
- -- same as `override` but specifically for overrides by filename
- -- takes effect when `strict` is true
- override_by_filename = {
-  [".gitignore"] = {
-    icon = "",
-    color = "#f1502f",
-    name = "Gitignore"
-  }
- };
- -- same as `override` but specifically for overrides by extension
- -- takes effect when `strict` is true
- override_by_extension = {
-  ["log"] = {
-    icon = "",
-    color = "#81e043",
-    name = "Log"
-  }
- };
-}
+require('config/nvim-web-devicons')
 
 -- When we are bootstrapping a configuration, it doesn't
 -- make sense to execute the rest of the init.lua.
@@ -164,82 +123,6 @@ vim.api.nvim_create_autocmd('BufWritePost', {
   pattern = vim.fn.expand '$MYVIMRC',
 })
 
--- [[ Setting options ]]
--- See `:help vim.o`
-
--- disable netrw at the very start of your init.lua (strongly advised)
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
-
-vim.opt.shortmess:append({ I = true })
-
--- vim.o.foldmethod = 'indent'
-vim.o.clipboard = "unnamedplus"
-
--- Set highlight on search
-vim.o.hlsearch = false
-
--- Make line numbers default
-vim.wo.number = true
-
-vim.o.wrap = false
-
--- Enable mouse mode
-vim.o.mouse = 'a'
-
--- Enable break indent
-vim.o.breakindent = true
-
--- Save undo history
-vim.o.undofile = true
-
--- Case insensitive searching UNLESS /C or capital in search
-vim.o.ignorecase = true
-vim.o.smartcase = true
-
--- Decrease update time
-vim.o.updatetime = 250
-vim.wo.signcolumn = 'yes'
-
--- Set colorscheme
-vim.o.termguicolors = true
-vim.cmd [[colorscheme onedark]]
-
--- Set completeopt to have a better completion experience
-vim.o.completeopt = 'menuone,noselect'
-
--- [[ Basic Keymaps ]]
--- Set <space> as the leader key
--- See `:help mapleader`
---  NOTE: Must happen before plugins are required (otherwise wrong leader will be used)
-vim.g.mapleader = ' '
-vim.g.maplocalleader = ' '
-
-vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
-vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
-
--- Keymaps for better default experience
--- See `:help vim.keymap.set()`
-vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
-
--- sneaky exit insert mode
-vim.keymap.set('i', 'jj', '<Esc>')
-vim.keymap.set('i', 'kk', '<Esc>')
-
--- primagen
-vim.keymap.set("n", "J", "mzJ`z")
-vim.keymap.set("n", "<C-d>", "<C-d>zz")
-vim.keymap.set("n", "<C-u>", "<C-u>zz")
-vim.keymap.set("n", "n", "nzzzv")
-vim.keymap.set("n", "N", "Nzzzv")
-
--- sneaky paste
-vim.keymap.set("x", "<leader>p", [["_dP]])
-
--- Remap for dealing with word wrap
-vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
-vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
-
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
@@ -254,31 +137,10 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 require("nvim-surround").setup()
 
 -- Enable nvim-tree
-require('nvim-tree').setup({
-  renderer = {
-    icons = {
-      show =  {
-        -- folder = false,
-        -- folder_arrow = false,
-        -- file = false
-      }
-    }
-  }
-})
-vim.keymap.set('n', '<leader>f', ':NvimTreeFindFile<CR>')
-vim.keymap.set('n', '<leader>s', ':NvimTreeFindFile<CR>')
-vim.keymap.set('n', '<S-Esc>', ':NvimTreeToggle<CR>')
+require('config.nvim-tree')
 
 -- Set lualine as statusline
--- See `:help lualine.txt`
-require('lualine').setup {
-  options = {
-    icons_enabled = true,
-    theme = 'onedark',
-    component_separators = '|',
-    section_separators = '',
-  },
-}
+require ('config.lualine')
 
 -- Enable Comment.nvim
 require('Comment').setup()
@@ -304,7 +166,31 @@ require('gitsigns').setup {
 
 -- [[ Configure Telescope ]]
 -- See `:help telescope` and `:help telescope.setup()`
-require('telescope').setup {
+-- Useful for easily creating commands
+local z_utils = require("telescope._extensions.zoxide.utils")
+
+require('telescope').setup{
+  -- (other Telescope configuration...)
+  extensions = {
+    zoxide = {
+      prompt_title = "[ Walking on the shoulders of TJ ]",
+      mappings = {
+        default = {
+          after_action = function(selection)
+            print("Update to (" .. selection.z_score .. ") " .. selection.path)
+          end
+        },
+        ["<C-s>"] = {
+          before_action = function(selection) print("before C-s") end,
+          action = function(selection)
+            vim.cmd.edit(selection.path)
+          end
+        },
+        -- Opens the selected entry in a new split
+        ["<C-q>"] = { action = z_utils.create_basic_command("split") },
+      },
+    }
+  },
   pickers = {
     find_files = {
       hidden = true
@@ -327,36 +213,10 @@ require('telescope').setup {
 
 -- Enable telescope fzf native, if installed
 pcall(require('telescope').load_extension, 'fzf')
+require("telescope").load_extension('zoxide')
+require('telescope').load_extension('zoxide')
 
--- See `:help telescope.builtin`
-vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
-vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = '[ ] Find existing buffers' })
-vim.keymap.set('n', '<leader>/', function()
-  -- You can pass additional configuration to telescope to change theme, layout, etc.
-  require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
-    winblend = 10,
-    previewer = false,
-  })
-end, { desc = '[/] Fuzzily search in current buffer]' })
-
-
-vim.keymap.set('n', '<Tab>', ':bnext<CR>')
-vim.keymap.set('n', '<S-Tab>', ':bprevious<CR>')
-vim.keymap.set('n', '<leader>bq', ':bp <BAR> bd #<CR>')
--- command! BufOnly silent! execute "%bd|e#|bd#"
--- local function bufonly()
---     api.nvim_command("execute '%bd|e#|bd#'")
--- end
--- vim.keymap.set("n", "<C-Cmd-t>", "<cmd>lua bufonly()<CR>", {noremap=true, silent=true})
-
-vim.keymap.set('n', '<leader>p', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
-vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
-vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
-vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
-vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
-vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
-
-require("bufferline").setup{}
+require('bufferline').setup{}
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
@@ -421,12 +281,6 @@ require('nvim-treesitter.configs').setup {
   },
 }
 
--- Diagnostic keymaps
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
-vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float)
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist)
-
 -- LSP settings.
 --  This function gets run when an LSP connects to a particular buffer.
 local on_attach = function(_, bufnr)
@@ -477,20 +331,7 @@ end
 --
 --  Add any additional override configuration in the following tables. They will be passed to
 --  the `settings` field of the server config. You must look up that documentation yourself.
-local servers = {
-  -- clangd = {},
-  -- gopls = {},
-  -- pyright = {},
-  -- rust_analyzer = {},
-  -- tsserver = {},
-
-  -- sumneko_lua = {
-  --   Lua = {
-  --     workspace = { checkThirdParty = false },
-  --     telemetry = { enable = false },
-  --   },
-  -- },
-}
+local servers = { }
 
 -- Setup neovim lua configuration
 require('neodev').setup()
@@ -565,9 +406,7 @@ cmp.setup {
   },
 }
 
--- vim.cmd('source ~/.config/nvim/sessions.vim')
-
--- autocmd BufWritePre *.tsx Neoformat
+vim.cmd('autocmd BufWritePre *.tsx Neoformat')
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
