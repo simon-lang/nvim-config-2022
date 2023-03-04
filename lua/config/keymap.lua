@@ -35,10 +35,16 @@ vim.keymap.set('n', '<S-Tab>', ':bprevious<CR>')
 vim.keymap.set('n', '<leader>bQ', ':%bd|e#|bd#<CR>')
 vim.keymap.set('n', '<leader>bq', ':bp <BAR> bd #<CR>')
 
+-- Git
+vim.keymap.set('n', '<leader>gb', ':Git blame<CR>')
+vim.keymap.set('n', '<leader>gl', require('telescope.builtin').git_commits, { desc = '[G]it [L]og' })
+vim.keymap.set('n', '<leader>lg', ':LazyGit<CR>')
+
 -- Telescope
 vim.keymap.set('n', '<leader>t', require('telescope.builtin').resume, { desc = 'Telescope Resume' })
 vim.keymap.set('n', '<leader>p', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
 vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
+vim.keymap.set('n', '<leader>re', require('telescope.builtin').oldfiles, { desc = '[S]earch R[E]cent]' })
 vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
 vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
 vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
@@ -58,7 +64,28 @@ end, { desc = '[/] Fuzzily search in current buffer]' })
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
+vim.keymap.set('n', '<S-F2>', vim.diagnostic.goto_next)
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
+vim.keymap.set('n', '<F2>', vim.diagnostic.goto_next)
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float)
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist)
+
+-- navigation between panes
+vim.keymap.set('n', '<leader><Left>', ':wincmd h<CR>')
+vim.keymap.set('n', '<leader><Down>', ':wincmd j<CR>')
+vim.keymap.set('n', '<leader><Up>', ':wincmd k<CR>')
+vim.keymap.set('n', '<leader><Right>',':wincmd l<CR>')
+
+vim.keymap.set('n', '<leader>ra','*:%s//')
+
+vim.keymap.set('n', '<leader>zf', '$V%zf')
+
+vim.keymap.set('n', '<F5>', ':w<CR>')
+vim.keymap.set('n', '<c-s>', ':w<CR>')
+
+
+vim.cmd('abb log console.log')
+vim.cmd('abb af () =>')
+vim.cmd('abb t {t(\'\')}')
+vim.cmd('abb sfy JSON.stringify(d, null, 2)')
 
