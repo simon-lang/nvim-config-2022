@@ -1,4 +1,8 @@
 require('nvim-tree').setup({
+  sync_root_with_cwd = true,
+  view = {
+    width = 40
+  },
   renderer = {
     icons = {
       show =  {
