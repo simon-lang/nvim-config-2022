@@ -70,6 +70,7 @@ require('packer').startup(function(use)
 
   use {'akinsho/bufferline.nvim', tag = "v3.*", requires = 'nvim-tree/nvim-web-devicons'}
   use 'jvgrootveld/telescope-zoxide'
+  use 'kdheepak/lazygit.nvim'
   use 'tpope/vim-fugitive'
   use 'tpope/vim-rhubarb'
   use 'lewis6991/gitsigns.nvim'
