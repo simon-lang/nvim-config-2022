@@ -85,6 +85,8 @@ require('packer').startup(function(use)
     end
   }
 
+  use 'slim-template/vim-slim'
+  use 'udalov/kotlin-vim'
   use {'akinsho/bufferline.nvim', tag = "v3.*", requires = 'nvim-tree/nvim-web-devicons'}
   use 'jvgrootveld/telescope-zoxide'
   use 'kdheepak/lazygit.nvim'
