@@ -85,6 +85,20 @@ require('packer').startup(function(use)
     end
   }
 
+  use({
+    'jackMort/ChatGPT.nvim',
+    config = function()
+      require('chatgpt').setup({
+        -- optional configuration
+      })
+    end,
+    requires = {
+      'MunifTanjim/nui.nvim',
+      'nvim-lua/plenary.nvim',
+      'nvim-telescope/telescope.nvim'
+    }
+  })
+
   use 'slim-template/vim-slim'
   use 'udalov/kotlin-vim'
   use {'akinsho/bufferline.nvim', tag = "v3.*", requires = 'nvim-tree/nvim-web-devicons'}
