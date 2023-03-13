@@ -48,7 +48,8 @@ vim.keymap.set('n', '<leader>re', require('telescope.builtin').oldfiles, { desc 
 vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
 vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
 vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
-vim.keymap.set("n", "<leader>cd", require("telescope").extensions.zoxide.list)
+-- vim.keymap.set("n", "<leader>cd", require("telescope").extensions.zoxide.list)
+vim.keymap.set("n", "<leader>cd", ':SearchSession<CR>')
 vim.keymap.set('n', '\\', require('telescope.builtin').live_grep, { desc = 'Search by Grep' })
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
 -- vim.keymap.set('n', '<leader>sp', require('telescope.builtin').projects, { desc = '[S]earch [P]rojects' })
@@ -76,16 +77,22 @@ vim.keymap.set('n', '<leader><Down>', ':wincmd j<CR>')
 vim.keymap.set('n', '<leader><Up>', ':wincmd k<CR>')
 vim.keymap.set('n', '<leader><Right>',':wincmd l<CR>')
 
+vim.keymap.set('n', '<leader>gpt',':ChatGPT<CR>')
+
 vim.keymap.set('n', '<leader>ra','*:%s//')
 
 vim.keymap.set('n', '<leader>zf', '$V%zf')
 
-vim.keymap.set('n', '<F5>', ':w<CR>')
-vim.keymap.set('n', '<c-s>', ':w<CR>')
+vim.keymap.set('n', '<F5>', ':update<CR>')
+vim.keymap.set('n', '<c-s>', ':update<CR>')
+vim.keymap.set('i', '<c-s>', '<C-O>:update<CR>')
 
-
-vim.cmd('abb log console.log')
+-- Abbreviations
+vim.cmd('abb log console.log()<Left>')
 vim.cmd('abb af () =>')
-vim.cmd('abb t {t(\'\')}')
 vim.cmd('abb sfy JSON.stringify(d, null, 2)')
+vim.cmd('abb tsignore // @ts-ignore')
+vim.cmd('abb rsf export const x = () =><Esc>Fxs')
+vim.cmd('abb uss const [] = useState()<Esc>F[a')
 
+vim.api.nvim_set_keymap("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", { noremap = true })
