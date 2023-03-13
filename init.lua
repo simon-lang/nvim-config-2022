@@ -68,6 +68,23 @@ require('packer').startup(function(use)
     end
   })
 
+  use {
+    'rmagatti/auto-session',
+    config = function()
+      require("auto-session").setup {
+        auto_session_suppress_dirs = { "~/", "~/Projects", "~/Downloads", "/"},
+      }
+    end
+  }
+
+  use {
+    'rmagatti/session-lens',
+    requires = {'rmagatti/auto-session', 'nvim-telescope/telescope.nvim'},
+    config = function()
+      require('session-lens').setup({--[[your custom config--]]})
+    end
+  }
+
   use {'akinsho/bufferline.nvim', tag = "v3.*", requires = 'nvim-tree/nvim-web-devicons'}
   use 'jvgrootveld/telescope-zoxide'
   use 'kdheepak/lazygit.nvim'
