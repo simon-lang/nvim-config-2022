@@ -50,6 +50,14 @@ require('packer').startup(function(use)
 
   use 'nvim-tree/nvim-web-devicons'
 
+  -- use {
+  --   "pmizio/typescript-tools.nvim",
+  --   requires = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+  --   config = function()
+  --     require("typescript-tools").setup {}
+  --   end,
+  -- }
+
   use {
     'nvim-tree/nvim-tree.lua',
     requires = {
@@ -98,6 +106,9 @@ require('packer').startup(function(use)
       'nvim-telescope/telescope.nvim'
     }
   })
+  -- use("nvim-lua/plenary.nvim")
+  -- use("MunifTanjim/nui.nvim")
+  -- use("dpayne/CodeGPT.nvim")
 
   use 'slim-template/vim-slim'
   use 'udalov/kotlin-vim'
@@ -487,6 +498,8 @@ cmp.setup {
 }
 
 vim.cmd('autocmd BufWritePre *.tsx Neoformat')
+
+
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

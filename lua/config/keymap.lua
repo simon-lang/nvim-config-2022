@@ -12,6 +12,7 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 -- sneaky exit insert mode
 vim.keymap.set('i', 'jj', '<Esc>')
 vim.keymap.set('i', 'kk', '<Esc>')
+vim.keymap.set('i', 'jk', '<Esc>')
 
 -- primagen
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
@@ -19,6 +20,7 @@ vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 vim.keymap.set("n", "J", "mzJ`z")
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
+vim.keymap.set("n", "gd", "gdzz")
 vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
 
@@ -90,9 +92,16 @@ vim.keymap.set('i', '<c-s>', '<C-O>:update<CR>')
 -- Abbreviations
 vim.cmd('abb log console.log()<Left>')
 vim.cmd('abb af () =>')
-vim.cmd('abb sfy JSON.stringify(d, null, 2)')
+vim.cmd('abb sfy JSON.stringify(x, null, 2)<Esc>Fxa<Backspace>')
+vim.cmd('abb debug <pre>{JSON.stringify(x, null, 2)}</pre><Esc>Fxa<Backspace>')
 vim.cmd('abb tsignore // @ts-ignore')
-vim.cmd('abb rsf export const x = () =><Esc>Fxs')
+vim.cmd('abb rsf export const x = (props: Props) => (<></>)<Esc>Fxa<Backspace><Backspace>')
+vim.cmd('abb rfc export const x = () =><Esc>Fxs')
 vim.cmd('abb uss const [] = useState()<Esc>F[a')
+vim.cmd('abb fun function x() {}<Esc>Fxa<Backspace>')
+vim.cmd('abb ustr const { t } = useTranslation()')
+vim.cmd('abb usd const { x } = useDiagnosticsStore()<Esc>Fxs')
+vim.cmd('abb tr {t(\'\')}<Esc>F\'i')
+
 
 vim.api.nvim_set_keymap("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", { noremap = true })
