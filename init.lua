@@ -50,14 +50,6 @@ require('packer').startup(function(use)
 
   use 'nvim-tree/nvim-web-devicons'
 
-  -- use {
-  --   "pmizio/typescript-tools.nvim",
-  --   requires = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
-  --   config = function()
-  --     require("typescript-tools").setup {}
-  --   end,
-  -- }
-
   use {
     'nvim-tree/nvim-tree.lua',
     requires = {
@@ -85,33 +77,7 @@ require('packer').startup(function(use)
     end
   }
 
-  use {
-    'rmagatti/session-lens',
-    requires = {'rmagatti/auto-session', 'nvim-telescope/telescope.nvim'},
-    config = function()
-      require('session-lens').setup({--[[your custom config--]]})
-    end
-  }
-
-  use({
-    'jackMort/ChatGPT.nvim',
-    config = function()
-      require('chatgpt').setup({
-        -- optional configuration
-      })
-    end,
-    requires = {
-      'MunifTanjim/nui.nvim',
-      'nvim-lua/plenary.nvim',
-      'nvim-telescope/telescope.nvim'
-    }
-  })
-  -- use("nvim-lua/plenary.nvim")
-  -- use("MunifTanjim/nui.nvim")
-  -- use("dpayne/CodeGPT.nvim")
-
   use 'slim-template/vim-slim'
-  use 'udalov/kotlin-vim'
   use {'akinsho/bufferline.nvim', tag = "v3.*", requires = 'nvim-tree/nvim-web-devicons'}
   use 'jvgrootveld/telescope-zoxide'
   use 'kdheepak/lazygit.nvim'
@@ -128,6 +94,7 @@ require('packer').startup(function(use)
   use 'tpope/vim-sleuth' -- Detect tabstop and shiftwidth automatically
   use 'junegunn/fzf'
   use 'junegunn/fzf.vim'
+  -- use 'udalov/kotlin-vim'
 
   -- Fuzzy Finder (files, lsp, etc)
   use { 'nvim-telescope/telescope.nvim', branch = '0.1.x', requires = { 'nvim-lua/plenary.nvim' } }
@@ -194,10 +161,10 @@ require('Comment').setup()
 
 -- Enable `lukas-reineke/indent-blankline.nvim`
 -- See `:help indent_blankline.txt`
-require('indent_blankline').setup {
-  char = '┊',
-  show_trailing_blankline_indent = false,
-}
+-- require('indent_blankline').setup {
+--   char = '┊',
+--   show_trailing_blankline_indent = false,
+-- }
 
 -- Gitsigns
 -- See `:help gitsigns.txt`
